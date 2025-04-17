@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chhota Bheem Competition</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #ccc;
+      box-sizing: border-box;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #tokenBox {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e6ffe6;
+      border-left: 4px solid #4CAF50;
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        max-width: 90%;
+        padding: 15px;
+      }
+      input, select, button {
+        padding: 10px;
+      }
+      button {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 12px;
+      }
+      button {
+        font-size: 14px;
+      }
+      input, select, button {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Chhota Bheem Competition - Token Generator</h2>
+    <form onsubmit="return generateToken()">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+      <input type="text" id="rollNumber" placeholder="Roll Number" required />
+
+      <select id="course" onchange="handleCourseChange()" required>
+        <option value="">Select Course</option>
+        <option value="B.Tech">B.Tech</option>
+        <option value="M.Tech">M.Tech</option>
+        <option value="B.Pharma">B.Pharma</option>
+        <option value="D.Pharma">D.Pharma</option>
+      </select>
+
+      <div id="branchWrapper">
+        <select id="branch">
+          <option value="">Select Branch</option>
+          <option value="CSE">Computer Science (CSE)</option>
+          <option value="ECE">Electronics (ECE)</option>
+          <option value="EE">Electrical (EE)</option>
+          <option value="ME">Mechanical (ME)</option>
+          <option value="CE">Civil (CE)</option>
+          <option value="CE">Chemical (CH)</option>
+          <option value="CE">Food (FT)</option>
+          <option value="CE">Bio (BT)</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <select id="year" required>
+        <option value="">Select Year</option>
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year">3rd Year</option>
+        <option value="4th Year">4th Year</option>
+      </select>
+
+      <button type="submit">Generate Token</button>
+    </form>
+
+    <div id="tokenBox"></div>
+  </div>
+
+  <script>
+    function handleCourseChange() {
+      const course = document.getElementById("course").value;
+      const branchWrapper = document.getElementById("branchWrapper");
+      branchWrapper.style.display = (course === "B.Pharma" || course === "D.Pharma") ? "none" : "block";
+    }
+
+    function generateToken() {
+      const name = document.getElementById("fullName").value.trim().toLowerCase();
+      const rollNumber = document.getElementById("rollNumber").value.trim();
+      const course = document.getElementById("course").value;
+      const branchWrapper = document.getElementById("branchWrapper");
+      const branch = document.getElementById("branch").value;
+      const year = document.getElementById("year").value;
+
+      if (!name || !rollNumber || !course || !year) {
+        alert("Please fill in all required fields.");
+        return false;
+      }
+
+      if (branchWrapper.style.display !== "none" && branch === "") {
+        alert("Please select a branch.");
+        return false;
+      }
+
+      const registrationKey = name + '-' + rollNumber + '-' + course + '-' + year + '-' + (branchWrapper.style.display === "none" ? "N/A" : branch);
+      const existingData = localStorage.getItem(registrationKey);
+
+      if (existingData) {
+        document.getElementById("tokenBox").innerHTML = `✅ You have already registered successfully.`;
+      } else {
+        // Generate a random 2-letter string
+        const randomChars = generateRandomChars();
+        // Generate a random number between 1 and 999
+        const randomNum = Math.floor(Math.random() * 999) + 1;
+
+        const token = `CB-${randomChars}-${randomNum}`;
+
+        const userData = {
+          fullName: name,
+          rollNumber: rollNumber,
+          course: course,
+          branch: branchWrapper.style.display === "none" ? "N/A" : branch,
+          year: year,
+          token: token
+        };
+
+        localStorage.setItem(registrationKey, JSON.stringify(userData));
+
+        document.getElementById("tokenBox").innerHTML = `✅ Your Token No. is : ${token}`;
+      }
+
+      return false;
+    }
+
+    // Helper function to generate a random 2-letter string
+    function generateRandomChars() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let randomChars = '';
+      for (let i = 0; i < 2; i++) { // Always generate 2 characters
+        randomChars += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return randomChars;
+    }
+
+    window.onload = handleCourseChange;
+  </script>
+</body>
+</html>
