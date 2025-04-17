@@ -2,189 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chhota Bheem Competition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chhota Bheem Food Competition</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      padding: 20px;
+      background: #fff8e1;
+      text-align: center;
+      padding: 30px;
       margin: 0;
+      transition: background 0.3s, color 0.3s;
     }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 25px;
+    h1 {
+      color: #d84315;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .fee {
+      font-size: 1.2em;
+      color: #6a1b9a;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .poster {
+      max-width: 300px;
+      width: 70%;
+      margin: 20px auto;
       border-radius: 12px;
-      box-shadow: 0 0 10px #ccc;
-      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    input, select, button {
+
+    .poster img {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      height: auto;
+      display: block;
+      border-radius: 12px;
     }
-    button {
-      background-color: #4CAF50;
+
+    .btn {
+      background-color: #ff6f00;
       color: white;
-      font-weight: bold;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 20px auto;
     }
-    button:hover {
-      background-color: #45a049;
-    }
-    #tokenBox {
+
+    .qr {
       margin-top: 20px;
-      padding: 15px;
-      background: #e6ffe6;
-      border-left: 4px solid #4CAF50;
+    }
+    .qr p {
+      font-size: 1em;
+      color: #333;
+    }
+    .qr img {
+      max-width: 200px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .qr img:hover {
+      transform: scale(1.05);
+    }
+
+    #countdown {
+      font-size: 1.5em;
+      color: #d84315;
+      margin-top: 20px;
+    }
+
+    .dark {
+      background-color: #222;
+      color: #fff;
+    }
+
+    .hover-effect:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    .reaction-box {
+      margin-top: 30px;
+    }
+    .reaction-box button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ffd54f;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .reaction-box button:hover {
+      background-color: #ffb300;
+    }
+    .reaction-message {
+      margin-top: 10px;
       font-weight: bold;
+      color: #4caf50;
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container {
-        max-width: 90%;
-        padding: 15px;
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.5em;
       }
-      input, select, button {
-        padding: 10px;
-      }
-      button {
-        font-size: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-      .container {
-        padding: 12px;
-      }
-      button {
-        font-size: 14px;
-      }
-      input, select, button {
-        padding: 8px;
+      .btn {
+        font-size: 18px;
+        padding: 12px 24px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Chhota Bheem Competition - Token Generator</h2>
-    <form onsubmit="return generateToken()">
-      <input type="text" id="fullName" placeholder="Full Name" required />
-      <input type="text" id="rollNumber" placeholder="Roll Number" required />
 
-      <select id="course" onchange="handleCourseChange()" required>
-        <option value="">Select Course</option>
-        <option value="B.Tech">B.Tech</option>
-        <option value="M.Tech">M.Tech</option>
-        <option value="B.Pharma">B.Pharma</option>
-        <option value="D.Pharma">D.Pharma</option>
-      </select>
+  <h1>Chhota Bheem Food Competition</h1>
+  <div class="fee">*** REGISTRATION FEE IS RS. 49 ***</div>
 
-      <div id="branchWrapper">
-        <select id="branch">
-          <option value="">Select Branch</option>
-          <option value="CSE">Computer Science (CSE)</option>
-          <option value="ECE">Electronics (ECE)</option>
-          <option value="EE">Electrical (EE)</option>
-          <option value="ME">Mechanical (ME)</option>
-          <option value="CE">Civil (CE)</option>
-          <option value="CE">Chemical (CH)</option>
-          <option value="CE">Food (FT)</option>
-          <option value="CE">Bio (BT)</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+  <div id="countdown"></div>
 
-      <select id="year" required>
-        <option value="">Select Year</option>
-        <option value="1st Year">1st Year</option>
-        <option value="2nd Year">2nd Year</option>
-        <option value="3rd Year">3rd Year</option>
-        <option value="4th Year">4th Year</option>
-      </select>
-
-      <button type="submit">Generate Token</button>
-    </form>
-
-    <div id="tokenBox"></div>
+  <div class="poster hover-effect">
+    <img src="WhatsApp Image 2025-04-12 at 12.04.37 AM.jpeg" alt="Competition Poster">
   </div>
 
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdUJAAUlXH0CJp8JHNv1FzFlwZ2snBBvPiG0OPJOz-H8G77fQ/viewform?usp=pp_url" target="_blank" class="btn hover-effect">Register via Google Form</a>
+
+  <div class="qr">
+    <p>Or scan this QR code to register:</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdUJAAUlXH0CJp8JHNv1FzFlwZ2snBBvPiG0OPJOz-H8G77fQ/viewform?usp=pp_url" target="_blank">
+      <img src="WhatsApp Image 2025-04-11 at 10.56.40 PM.jpeg" alt="Google Form QR Code" id="qrCode" class="hover-effect">
+    </a>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <h2 style="color:#ff6f00;">Sample Dishes</h2>
+    <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+      <img src="golgappa.png" style="width:120px; border-radius:8px;" alt="Dish 1" class="hover-effect">
+      <img src="banana.avif" style="width:120px; border-radius:8px;" alt="Dish 2" class="hover-effect">
+      <img src="laddu.png" style="width:120px; border-radius:8px;" alt="Dish 3" class="hover-effect">
+    </div>
+  </div>
+
+  <button onclick="toggleTheme()" class="btn">Toggle Theme</button>
+
+  <div class="reaction-box">
+    <h3>How excited are you?</h3>
+    <button onclick="showReaction('Super Excited! 🎉')">Super Excited</button>
+    <button onclick="showReaction('Can’t wait! 🍽️')">Can’t wait</button>
+    <button onclick="showReaction('Coming with friends! 👯‍♂️')">With Friends</button>
+    <p id="reactionMsg" class="reaction-message"></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    function handleCourseChange() {
-      const course = document.getElementById("course").value;
-      const branchWrapper = document.getElementById("branchWrapper");
-      branchWrapper.style.display = (course === "B.Pharma" || course === "D.Pharma") ? "none" : "block";
+    // Show confetti on load
+    window.addEventListener('load', () => {
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    });
+
+    // Animate button on click
+    const btn = document.querySelector('.btn');
+    btn.addEventListener('click', () => {
+      btn.style.backgroundColor = '#d84315';
+      setTimeout(() => {
+        btn.style.backgroundColor = '#ff6f00';
+      }, 300);
+    });
+
+    // Countdown Timer
+    // const eventDate = new Date("2025-04-20T10:00:00").getTime();
+    // const countdown = document.getElementById("countdown");
+    // const timer = setInterval(() => {
+    //   const now = new Date().getTime();
+    //   const distance = eventDate - now;
+
+    //   if (distance <= 0) {
+    //     clearInterval(timer);
+    //     countdown.innerHTML = "The event is live!";
+    //   } else {
+    //     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    //     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    //     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    //     countdown.innerHTML = `Starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    //   }
+    // }, 1000);
+
+    // Toggle dark mode
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
     }
 
-    function generateToken() {
-      const name = document.getElementById("fullName").value.trim().toLowerCase();
-      const rollNumber = document.getElementById("rollNumber").value.trim();
-      const course = document.getElementById("course").value;
-      const branchWrapper = document.getElementById("branchWrapper");
-      const branch = document.getElementById("branch").value;
-      const year = document.getElementById("year").value;
-
-      if (!name || !rollNumber || !course || !year) {
-        alert("Please fill in all required fields.");
-        return false;
-      }
-
-      if (branchWrapper.style.display !== "none" && branch === "") {
-        alert("Please select a branch.");
-        return false;
-      }
-
-      const registrationKey = name + '-' + rollNumber + '-' + course + '-' + year + '-' + (branchWrapper.style.display === "none" ? "N/A" : branch);
-      const existingData = localStorage.getItem(registrationKey);
-
-      if (existingData) {
-        document.getElementById("tokenBox").innerHTML = `✅ You have already registered successfully.`;
-      } else {
-        // Generate a random 2-letter string
-        const randomChars = generateRandomChars();
-        // Generate a random number between 1 and 999
-        const randomNum = Math.floor(Math.random() * 999) + 1;
-
-        const token = `CB-${randomChars}-${randomNum}`;
-
-        const userData = {
-          fullName: name,
-          rollNumber: rollNumber,
-          course: course,
-          branch: branchWrapper.style.display === "none" ? "N/A" : branch,
-          year: year,
-          token: token
-        };
-
-        localStorage.setItem(registrationKey, JSON.stringify(userData));
-
-        document.getElementById("tokenBox").innerHTML = `✅ Your Token No. is : ${token}`;
-      }
-
-      return false;
+    // Show user reaction
+    function showReaction(msg) {
+      document.getElementById('reactionMsg').textContent = msg;
     }
-
-    // Helper function to generate a random 2-letter string
-    function generateRandomChars() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      let randomChars = '';
-      for (let i = 0; i < 2; i++) { // Always generate 2 characters
-        randomChars += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return randomChars;
-    }
-
-    window.onload = handleCourseChange;
   </script>
+
 </body>
 </html>
